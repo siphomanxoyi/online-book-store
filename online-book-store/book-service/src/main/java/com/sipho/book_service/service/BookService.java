@@ -9,16 +9,20 @@ import com.sipho.book_service.model.Book;
 import com.sipho.book_service.repository.BookRepository;
 
 import io.micrometer.common.util.StringUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class BookService {
     private static final String BOOK_SAVED_SUCCESS_MSG = "Book stored successfully";
     private static final String BOOK_UPDATED_SUCCESS_MSG = "Book updated successfully";
     private static final String BOOK_DELETED_SUCCESS_MSG = "Book deleted succesfully";
+    
     @Autowired
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
+
 
     public List<Book> getBooks(String author, String genre) {
         if(StringUtils.isEmpty(author) && StringUtils.isEmpty(genre)){
