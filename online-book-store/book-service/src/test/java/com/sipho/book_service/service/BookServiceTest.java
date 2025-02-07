@@ -8,9 +8,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class BookServiceTest {
@@ -47,11 +51,13 @@ public class BookServiceTest {
 
     @Test
     void should_GetBookByIdFromDatabase_When_GetBookCalled() {
-        int bookId = 1;
+        Book expected = new Book(1, "MyBook", "MyAuthor", 200d, 10, "Thriller");
+        when(bookRepository.findById(1)).thenReturn(Optional.of(expected));
 
-        bookService.getBook(bookId);
+        Book actual = bookService.getBook(1);
 
-        verify(bookRepository).findById(bookId);
+        assertEquals(expected, actual);
+        verify(bookRepository).findById(1);
     }
 
     @Test
@@ -59,8 +65,13 @@ public class BookServiceTest {
         String author = "";
         String genre = "";
 
-        bookService.getBooks(author, genre);
+        List<Book> expected = List.of( new Book(1, "MyBook", "MyAuthor", 200d, 10, "Thriller"));
+        when(bookRepository.findAll()).thenReturn(expected);
 
+
+        List<Book> actual = bookService.getBooks(author, genre);
+
+        assertEquals(expected, actual);
         verify(bookRepository).findAll();
     }
 
