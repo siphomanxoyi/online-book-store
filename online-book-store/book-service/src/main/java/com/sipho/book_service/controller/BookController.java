@@ -49,7 +49,7 @@ public class BookController {
     @PutMapping("/books/{id}")
     public ResponseEntity<String> updateBook(@PathVariable int id, @RequestBody Book book) {
         if(book.getId() != id){
-            throw new RuntimeException("ID in path and request body do not match!");
+            return ResponseEntity.badRequest().body("ID in path and request body do not match!");
         }
         return new ResponseEntity<>(bookService.updateBook(id, book), HttpStatus.OK);
     }
